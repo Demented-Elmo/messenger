@@ -1,4 +1,4 @@
-name: messenger
+name: Messenger
 
 on:
   push:
