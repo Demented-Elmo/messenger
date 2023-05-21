@@ -22,8 +22,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//DELETE ME TO CHECK BUILD AFTER UPDATE
-
 //Variables
 String name = "";
 bool sentOnce = false;
