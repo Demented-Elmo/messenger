@@ -1,7 +1,8 @@
-// ignore_for_file: avoid_print, library_private_types_in_public_api, unused_import
+// ignore_for_file: avoid_print, unused_import, library_private_types_in_public_api
+// Github: https://github.com/Demented-Elmo/messenger/actions
+// Website: https://demented-elmo.github.io/messenger/#/
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
