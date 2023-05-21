@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//DELETE ME TO CHECK BUILD AFTER UPDATE
+
 //Variables
 String name = "";
 bool sentOnce = false;
@@ -42,9 +44,9 @@ class ChatScreen extends StatefulWidget {
   _ChatScreenState createState() => _ChatScreenState();}
 
 class _ChatScreenState extends State<ChatScreen> {
+  final channel = WebSocketChannel.connect(Uri.parse('wss://websocket.dementedelmo.repl.co'));
   final msgController = TextEditingController();
   var focusNode = FocusNode();
-  final channel = WebSocketChannel.connect(Uri.parse('wss://websocket.dementedelmo.repl.co'));
 
   @override
   void initState() {
@@ -63,9 +65,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
-    channel.sink.close();
-    super.dispose();
-  }
+    channel.sink.close(); 
+    super.dispose();}
 
   @override
   Widget build(BuildContext context) {
@@ -110,16 +111,12 @@ class _ChatScreenState extends State<ChatScreen> {
                   style: TextStyle(color: fg),
                   onSubmitted: (String str) {
                     str = str.trimRight();
-                    String strName = "";
-                    if(sentOnce == false){
-                      strName = "$name: $str"; 
-                      sentOnce = true;}
-                    else if(sentOnce == true){
-                        strName = str;}
                     if(str.isNotEmpty == true){
-                      setState(() {_messages.insert(0, strName);});
-                      channel.sink.add(strName);}
-                    else{sentOnce = false;}
+                      if(sentOnce == false){
+                        str = "$name: $str"; 
+                        sentOnce = true;}
+                      setState(() {_messages.insert(0, str);});
+                      channel.sink.add(str);}
                     msgController.clear();
                     focusNode.requestFocus();
                   },
@@ -225,10 +222,9 @@ class _UserState extends State<User> {
                         hintText: 'Set your username...',
                         hintStyle: TextStyle(color:hint)),
                     style: TextStyle(color: fg),
-                    onSubmitted: (String str) {
+                    onSubmitted: (String nameRaw) {
                       sentOnce = false;
-                      name = str;
-                      name.trim();
+                      name = nameRaw.trim();
                       if(name.isEmpty == true){name = "Anonymous";}
                       msgController.clear();
                       Navigator.push(
