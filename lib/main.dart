@@ -15,8 +15,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Messenger App',
       theme: ThemeData(
-        primarySwatch: Colors.deepPurple,
-      ),
+        primarySwatch: themeColor,
+        unselectedWidgetColor:themeColor),
       home: const User(),
     );
   }
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 String name = "";
 bool sentOnce = false;
 List<String> _messages = [];
+MaterialColor themeColor = Colors.deepPurple;
 Color fg = const Color.fromARGB(255, 29, 29, 29);
 Color bg = const Color.fromARGB(255, 255, 255, 255);
 Color hint = const Color.fromARGB(255, 95, 95, 95);
@@ -190,7 +191,7 @@ class _UserState extends State<User> {
                               onChanged: (SingingCharacter? value){
                                 setState(() {
                                   fg = const Color.fromARGB(255, 255, 255, 255);
-                                  bg = const Color.fromARGB(255, 53, 53, 53);
+                                  bg = const Color.fromARGB(255, 37, 37, 37);
                                   hint = const Color.fromARGB(228, 255, 255, 255);
                                   _character = value;
                                 });
