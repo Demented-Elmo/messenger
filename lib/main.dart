@@ -51,20 +51,27 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    channel.sink.add('------------------------------');
     channel.sink.add('$name has joined the chat!');
+    _messages.insert(0, '------------------------------');
     _messages.insert(0, '$name has joined the chat!');
     sentOnce = false;
-    channel.stream.listen((onData){
-      final message = onData as String;
-      setState(() {
-        sentOnce = false;
-        _messages.insert(0, message);
-      });
-    });
+    channel.stream.listen(
+      (onData) {
+        final message = onData as String;
+        setState(() {
+          sentOnce = false;
+          _messages.insert(0, message);
+        });
+      },
+    );
   }
 
   @override
   void dispose() {
+    channel.sink.add('------------------------------');
+    channel.sink.add('$name left the chat.');
+    _messages.insert(0, '==============================');
     channel.sink.close(); 
     super.dispose();}
 
