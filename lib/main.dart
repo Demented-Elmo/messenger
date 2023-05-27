@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
 }
 
 //Variables
+int users = 0;
 String name = "";
 bool sentOnce = false;
 List<String> _messages = [];
@@ -51,27 +52,25 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    channel.sink.add('------------------------------');
     channel.sink.add('$name has joined the chat!');
-    _messages.insert(0, '------------------------------');
     _messages.insert(0, '$name has joined the chat!');
     sentOnce = false;
-    channel.stream.listen(
-      (onData) {
-        final message = onData as String;
-        setState(() {
+    channel.stream.listen((message) {
+      setState(() {
+        if (int.tryParse(message) != null) {users = int.parse(message);} 
+        else {
           sentOnce = false;
-          _messages.insert(0, message);
-        });
+          _messages.insert(0, message.substring(1));
+        }
+      });
       },
     );
   }
 
   @override
   void dispose() {
-    channel.sink.add('------------------------------');
     channel.sink.add('$name left the chat.');
-    _messages.insert(0, '==============================');
+    _messages.insert(0, '------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');
     channel.sink.close(); 
     super.dispose();}
 
@@ -83,12 +82,27 @@ class _ChatScreenState extends State<ChatScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
+          Container(
+            decoration: BoxDecoration(
+              border: Border(bottom:BorderSide(color: themeColor, width: 3)),
+            ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+                child: Text(
+                    "Users Online: $users",
+                    style: TextStyle(color: fg),
+                ),
+              ),
+            ),
+          ),
           SizedBox(
             height: MediaQuery.of(context).size.height 
               - kToolbarHeight 
               - MediaQuery.of(context).padding.top 
               - MediaQuery.of(context).padding.bottom
-              - 70,
+              - 110,
             child: ListView.builder(
               reverse: true,
               itemCount: _messages.length,
