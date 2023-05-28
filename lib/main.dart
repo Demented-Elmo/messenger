@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
 int users = 0;
 String name = "";
 bool sentOnce = false;
+bool joinedOnce = false;
 List<String> _messages = [];
 MaterialColor themeColor = Colors.deepPurple;
 Color fg = const Color.fromARGB(255, 29, 29, 29);
@@ -52,6 +53,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
+    if (joinedOnce == true){_messages.insert(0, '------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');}
+    joinedOnce = true;
     channel.sink.add('$name has joined the chat!');
     _messages.insert(0, '$name has joined the chat!');
     sentOnce = false;
@@ -69,8 +72,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    while(_messages.contains('------ ⬆️ PREVIOUS MESSAGES ⬆️ ------')){
+      _messages.remove('------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');
+    }
     channel.sink.add('$name left the chat.');
-    _messages.insert(0, '------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');
     channel.sink.close(); 
     super.dispose();}
 
@@ -238,8 +243,10 @@ class _UserState extends State<User> {
                     autofocus: true,
                     decoration: InputDecoration(
                         border: const OutlineInputBorder(),
-                        enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:1.5)),
-                        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
+                        enabledBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:1.5)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
                         hintText: 'Set your username...',
                         hintStyle: TextStyle(color:hint)),
                     style: TextStyle(color: fg),
