@@ -29,6 +29,8 @@ bool sentOnce = false;
 bool joinedOnce = false;
 List<String> _messages = [];
 MaterialColor themeColor = Colors.deepPurple;
+Color themeColorT1 = const Color.fromARGB(60, 104, 58, 183);
+Color themeColorT2 = const Color.fromARGB(99, 104, 58, 183);
 Color fg = const Color.fromARGB(255, 29, 29, 29);
 Color bg = const Color.fromARGB(255, 255, 255, 255);
 Color hint = const Color.fromARGB(255, 95, 95, 95);
@@ -49,6 +51,18 @@ class _ChatScreenState extends State<ChatScreen> {
   final channel = WebSocketChannel.connect(Uri.parse('wss://websocket.dementedelmo.repl.co'));
   final msgController = TextEditingController();
   var focusNode = FocusNode();
+
+  void _handleSubmitted(String str) {
+    str = str.trimRight();
+    if(str.isNotEmpty == true){
+      if(sentOnce == false){
+        str = "$name: $str"; 
+        sentOnce = true;}
+      setState(() {_messages.insert(0, str);});
+      channel.sink.add(str);}
+    msgController.clear();
+    focusNode.requestFocus();
+  }
 
   @override
   void initState() {
@@ -120,34 +134,58 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
-            child: SizedBox(
-              height: 50,
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: TextField(
-                  focusNode: focusNode,
-                  controller: msgController,
-                  autofocus: true,
-                  decoration: InputDecoration(
-                      border: const OutlineInputBorder(),
-                      hintText: 'Type a message...',
-                      hintStyle: TextStyle(color:hint)),
-                  style: TextStyle(color: fg),
-                  onSubmitted: (String str) {
-                    str = str.trimRight();
-                    if(str.isNotEmpty == true){
-                      if(sentOnce == false){
-                        str = "$name: $str"; 
-                        sentOnce = true;}
-                      setState(() {_messages.insert(0, str);});
-                      channel.sink.add(str);}
-                    msgController.clear();
-                    focusNode.requestFocus();
-                  },
+          Expanded(
+            child: Row(
+              children:[
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, right: 10, top: 0, bottom: 0),
+                    child: SizedBox(
+                      height: 50,
+                      width: double.infinity,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: TextField(
+                          focusNode: focusNode,
+                          controller: msgController,
+                          autofocus: true,
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              hintText: 'Type a message...',
+                              hintStyle: TextStyle(color:hint)),
+                          style: TextStyle(color: fg),
+                          onSubmitted: (String str) {
+                            str = str.trimRight();
+                            if(str.isNotEmpty == true){
+                              if(sentOnce == false){
+                                str = "$name: $str"; 
+                                sentOnce = true;}
+                              setState(() {_messages.insert(0, str);});
+                              channel.sink.add(str);}
+                            msgController.clear();
+                            focusNode.requestFocus();
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 0, right: 10, top: 0, bottom: 0),
+                  child: SizedBox(
+                    height: 40,
+                    child: Align(
+                      alignment: Alignment.bottomRight,
+                        child: IconButton(
+                          color: themeColor,
+                          hoverColor: themeColorT1,
+                          highlightColor: themeColorT2,
+                          icon: const Icon(Icons.send),
+                          onPressed: () => _handleSubmitted(msgController.text)),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -236,6 +274,7 @@ class _UserState extends State<User> {
             child: Padding(
               padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
               child: SizedBox(
+                width: 350,
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: TextField(
