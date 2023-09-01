@@ -1,10 +1,12 @@
 // ignore_for_file: avoid_print, unused_import, library_private_types_in_public_api
 // Github: https://github.com/Demented-Elmo/messenger/actions
 // Website: https://demented-elmo.github.io/messenger/#/
+import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+
 
 void main() async{runApp(const MyApp());}
 
@@ -90,6 +92,7 @@ class _ChatScreenState extends State<ChatScreen> {
       _messages.remove('------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');
     }
     channel.sink.add('$name left the chat.');
+    _messages.insert(0, 'You left the chat.');
     channel.sink.close(); 
     super.dispose();}
 
@@ -127,7 +130,11 @@ class _ChatScreenState extends State<ChatScreen> {
               itemCount: _messages.length,
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text(_messages[index]),
+                  title: Text(_messages[index],
+                    style: TextStyle(
+                      fontWeight: (_messages[index].endsWith('has joined the chat!') || _messages[index].endsWith('left the chat.')) ? FontWeight.bold : FontWeight.normal,
+                    ),
+                  ),
                   contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 17),
                   textColor: fg,
                 );
@@ -160,6 +167,12 @@ class _ChatScreenState extends State<ChatScreen> {
                               if(sentOnce == false){
                                 str = "$name: $str"; 
                                 sentOnce = true;}
+                              if(str.endsWith("has joined the chat!")){
+                                str = "$str ";
+                              }
+                              if(str.endsWith("left the chat.")){
+                                str = "$str ";
+                              }
                               setState(() {_messages.insert(0, str);});
                               channel.sink.add(str);}
                             msgController.clear();
@@ -207,8 +220,11 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   SingingCharacter? _character = SingingCharacter.light;
-
   final msgController = TextEditingController();
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
