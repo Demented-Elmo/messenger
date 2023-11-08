@@ -1,11 +1,12 @@
-// ignore_for_file: avoid_print, unused_import, library_private_types_in_public_api
+// ignore_for_file: avoid_print, library_private_types_in_public_api
 // Github: https://github.com/Demented-Elmo/messenger/actions
 // Website: https://demented-elmo.github.io/messenger/#/
 import 'dart:async';
-import 'dart:io';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:window_manager/window_manager.dart';
+import 'package:location/location.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 void main() async{runApp(const MyApp());}
@@ -23,13 +24,16 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
 //Variables
 int users = 0;
 String name = "";
 bool sentOnce = false;
 bool joinedOnce = false;
 List<String> _messages = [];
+List<Circle> _circles = [];
+List<Marker> _markers = [];
+double latitude = 0;
+double longitude = 0;
 MaterialColor themeColor = Colors.deepPurple;
 Color themeColorT1 = const Color.fromARGB(60, 104, 58, 183);
 Color themeColorT2 = const Color.fromARGB(99, 104, 58, 183);
@@ -61,7 +65,8 @@ class _ChatScreenState extends State<ChatScreen> {
         str = "$name: $str"; 
         sentOnce = true;}
       setState(() {_messages.insert(0, str);});
-      channel.sink.add(str);}
+      var dataToSend = {'message': str,'location': {'latitude': latitude, 'longitude': longitude,}};
+      channel.sink.add(jsonEncode(dataToSend));}
     msgController.clear();
     focusNode.requestFocus();
   }
@@ -71,7 +76,8 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     if (joinedOnce == true){_messages.insert(0, '------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');}
     joinedOnce = true;
-    channel.sink.add('$name has joined the chat!');
+    var dataToSend = {'message': '$name has joined the chat!','location': {'latitude': latitude, 'longitude': longitude,}};
+    channel.sink.add(jsonEncode(dataToSend));
     _messages.insert(0, '$name has joined the chat!');
     sentOnce = false;
     channel.stream.listen((message) {
@@ -89,9 +95,9 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     while(_messages.contains('------ ⬆️ PREVIOUS MESSAGES ⬆️ ------')){
-      _messages.remove('------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');
-    }
-    channel.sink.add('$name left the chat.');
+      _messages.remove('------ ⬆️ PREVIOUS MESSAGES ⬆️ ------');}
+    var dataToSend = {'message': '$name has left the chat.','location': {'latitude': latitude, 'longitude': longitude,}};
+    channel.sink.add(jsonEncode(dataToSend));
     _messages.insert(0, 'You left the chat.');
     channel.sink.close(); 
     super.dispose();}
@@ -174,7 +180,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                 str = "$str ";
                               }
                               setState(() {_messages.insert(0, str);});
-                              channel.sink.add(str);}
+                              var dataToSend = {
+                                'message': str,
+                                'location': {'latitude': latitude, 'longitude': longitude,}
+                              };
+                              channel.sink.add(jsonEncode(dataToSend));}
                             msgController.clear();
                             focusNode.requestFocus();
                           },
@@ -220,11 +230,64 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   SingingCharacter? _character = SingingCharacter.light;
+  final Completer<GoogleMapController> _mapsController = Completer<GoogleMapController>();
   final msgController = TextEditingController();
+  final Location _location = Location();
+  LatLng _currentLocation = const LatLng(0.0, 0.0);
+
+  double radius = 50;
+
+  Future<void> _getLocation() async {
+    LocationData locationData = await _location.getLocation();
+    setState(() {
+      _currentLocation = LatLng(locationData.latitude!, locationData.longitude!);
+      latitude = locationData.latitude!;
+      longitude = locationData.longitude!;
+    });
+  }
+
+  Future<void> _goToLocation() async {
+    if (_currentLocation.latitude == 0.0 && _currentLocation.longitude == 0.0) {await _getLocation();}
+    final GoogleMapController controller = await _mapsController.future;
+    
+    final newCameraPosition = CameraPosition(
+      target: _currentLocation,
+      zoom: 17.0,
+      tilt: 45.0,);
+
+    controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
+    
+    _circles.clear();
+    const circleId = CircleId('user_location_circle');
+    var circle = Circle(
+      circleId: circleId,
+      center: _currentLocation,
+      radius: radius,
+      fillColor: Colors.blue.withOpacity(0.3),
+      strokeColor: Colors.blue,
+      strokeWidth: 3,
+    );
+
+    _circles.add(circle);
 
 
 
-
+    _markers.clear();
+    const MarkerId markerId = MarkerId('user_location_marker');
+    final Marker marker = Marker(
+      markerId: markerId,
+      position: _currentLocation,
+      icon: BitmapDescriptor.defaultMarker,
+      onTap: _goToLocation,
+    );
+    _markers.add(marker);
+  }
+  void updateRadius(double newRadius) {
+      setState(() {
+        radius = newRadius;
+      });
+      _goToLocation();
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -233,9 +296,49 @@ class _UserState extends State<User> {
       backgroundColor: bg,
       body: Column(
         children: [
+          SizedBox(
+            height: 370,
+            width: 370,
+            child: GoogleMap(
+              mapType: MapType.hybrid,
+              initialCameraPosition: CameraPosition(
+                target: _currentLocation,
+                zoom: 1,
+              ),
+              circles: Set.from(_circles),
+              markers: Set.from(_markers),
+              onMapCreated: (GoogleMapController controller) { 
+                _mapsController.complete(controller);
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 15, bottom: 0),
+            child:  TextButton(
+              style: TextButton.styleFrom(
+                textStyle: const TextStyle(fontSize: 23),
+                iconColor: themeColor,
+                foregroundColor: themeColor,
+                surfaceTintColor: themeColorT1,
+              ),
+              onPressed: _goToLocation, 
+              child: const Text("My Location"),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5, bottom: 0),
+            child: Slider(
+              value: radius,
+              min: 10,
+              max: 100,
+              divisions: 9,
+              label: radius.round().toString(),
+              onChanged: updateRadius,
+            ),
+          ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 15),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: SizedBox(
@@ -288,7 +391,7 @@ class _UserState extends State<User> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(left: 15, right: 15, top: 10, bottom: 10),
+              padding: const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 10),
               child: SizedBox(
                 width: 350,
                 child: Align(
