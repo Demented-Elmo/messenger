@@ -130,6 +130,7 @@ class _UserState extends State<User> {
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width / 1.48,
                     child: Slider(
+                      inactiveColor: themeColorT2,
                       value: radius,
                       min: 10,
                       max: 100,
