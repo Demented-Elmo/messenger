@@ -83,7 +83,7 @@ class _UserState extends State<User> {
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
                   child: Container(
-                    height: 370,
+                    height: MediaQuery.of(context).size.width / 6,
                     width: double.infinity,
                     clipBehavior: Clip.hardEdge,
                     decoration: BoxDecoration(border: Border.all(color: themeColor, width: 4), borderRadius: BorderRadius.circular(13)),
