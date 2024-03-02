@@ -71,12 +71,12 @@ class _UserState extends State<User> {
     return Scaffold(
       appBar: AppBar(backgroundColor: themeColor, toolbarHeight: 5),
       backgroundColor: Colors.black,
-      body: SingleChildScrollView(
+      body: Container(
+        constraints: const BoxConstraints(maxWidth: 500),
+        height: MediaQuery.of(context).size.height,
+        color: bg,
         child: Center(
-        child: Container(
-          constraints: const BoxConstraints(maxWidth: 500),
-          height: MediaQuery.of(context).size.height,
-          color: bg,
+          child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -222,8 +222,8 @@ class _UserState extends State<User> {
                 ),
               ],
             ),
+          ),
         ),
-      ),
       ),
     );
   }
