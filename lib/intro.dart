@@ -82,7 +82,7 @@ class _UserState extends State<User> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Container(
@@ -119,7 +119,6 @@ class _UserState extends State<User> {
                         iconColor: themeColor,
                         foregroundColor: themeColor,
                         surfaceTintColor: themeColorT1,
-                        
                       ),
                       onPressed: _goToLocation, 
                       child: const Text("My Location"),
@@ -127,18 +126,21 @@ class _UserState extends State<User> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 5, bottom: 0, right: 40, left: 40),
-                  child: Slider(
-                    value: radius,
-                    min: 10,
-                    max: 100,
-                    divisions: 9,
-                    label: radius.round().toString(),
-                    onChanged: updateRadius,
+                  padding: const EdgeInsets.only(top: 5, bottom: 0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 1.48,
+                    child: Slider(
+                      value: radius,
+                      min: 10,
+                      max: 100,
+                      divisions: 9,
+                      label: radius.round().toString(),
+                      onChanged: updateRadius,
+                    ),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 15),
+                  padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 15),
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SizedBox(
@@ -189,14 +191,14 @@ class _UserState extends State<User> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 15, right: 15, top: 0, bottom: 10),
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
                   child: SizedBox(
                     width: 350,
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: TextField(
                         controller: usrController,
-                        autofocus: true,
+                        autofocus: false,
                         decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             enabledBorder: const OutlineInputBorder(
