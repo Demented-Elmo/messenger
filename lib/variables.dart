@@ -1,0 +1,27 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:location/location.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+int users = 0;
+String name = "";
+bool sentOnce = false;
+bool joinedOnce = false;
+List<String> messages = [];
+List<Circle> circles = [];
+List<Marker> markers = [];
+double latitude = 0;
+double longitude = 0;
+MaterialColor themeColor = Colors.deepPurple;
+Color themeColorT1 = const Color.fromARGB(60, 104, 58, 183);
+Color themeColorT2 = const Color.fromARGB(99, 104, 58, 183);
+Color fg = const Color.fromARGB(255, 29, 29, 29);
+Color bg = const Color.fromARGB(255, 255, 255, 255);
+Color hint = const Color.fromARGB(255, 95, 95, 95);
+enum SingingCharacter {light, dark}
+final msgController = TextEditingController();
+var focusNode = FocusNode();
+SingingCharacter? character = SingingCharacter.light;
+final Completer<GoogleMapController> mapsController = Completer<GoogleMapController>();
+final usrController = TextEditingController();
+final Location location = Location();
+LatLng currentLocation = const LatLng(0.0, 0.0);
