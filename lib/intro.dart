@@ -71,7 +71,8 @@ class _UserState extends State<User> {
     return Scaffold(
       appBar: AppBar(backgroundColor: themeColor, toolbarHeight: 5),
       backgroundColor: Colors.black,
-      body: Center(
+      body: SingleChildScrollView(
+        child: Center(
         child: Container(
           constraints: const BoxConstraints(maxWidth: 500),
           height: MediaQuery.of(context).size.height,
@@ -82,25 +83,27 @@ class _UserState extends State<User> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Container(
-                    height: MediaQuery.of(context).size.width / 4,
-                    width: double.infinity,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(border: Border.all(color: themeColor, width: 4), borderRadius: BorderRadius.circular(13)),
+                  child: AspectRatio(
+                    aspectRatio: 1,
                     child: Container(
+                      width: double.infinity,
                       clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(9)),
-                      child: GoogleMap(
-                        mapType: MapType.hybrid,
-                        initialCameraPosition: CameraPosition(
-                          target: currentLocation,
-                          zoom: 1,
+                      decoration: BoxDecoration(border: Border.all(color: themeColor, width: 4), borderRadius: BorderRadius.circular(13)),
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(9)),
+                        child: GoogleMap(
+                          mapType: MapType.hybrid,
+                          initialCameraPosition: CameraPosition(
+                            target: currentLocation,
+                            zoom: 1,
+                          ),
+                          circles: Set.from(circles),
+                          markers: Set.from(markers),
+                          onMapCreated: (GoogleMapController controller) { 
+                            mapsController.complete(controller);
+                          },
                         ),
-                        circles: Set.from(circles),
-                        markers: Set.from(markers),
-                        onMapCreated: (GoogleMapController controller) { 
-                          mapsController.complete(controller);
-                        },
                       ),
                     ),
                   ),
@@ -220,6 +223,7 @@ class _UserState extends State<User> {
               ],
             ),
         ),
+      ),
       ),
     );
   }
