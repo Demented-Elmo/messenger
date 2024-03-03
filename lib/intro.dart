@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 import 'chat.dart';
 import 'dart:async';
 import 'variables.dart';
@@ -146,14 +148,15 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 15),
+                    padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
                     child: Align(
                       alignment: Alignment.center,
                       child: SizedBox(
                         width: double.infinity,
                         child: Row(
                           children: <Widget>[
-                            Expanded(
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
                               child: InkWell(
                                 onTap: () =>  setState(() {
                                   fg = const Color.fromARGB(255, 29, 29, 29);
@@ -185,7 +188,8 @@ class _UserState extends State<User> {
                                 ),
                               ),
                             ),
-                            Expanded(
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 2,
                               child: InkWell(
                                 onTap: () =>  setState(() {
                                   fg = const Color.fromARGB(255, 255, 255, 255);
@@ -194,7 +198,7 @@ class _UserState extends State<User> {
                                   character = SingingCharacter.dark;
                                 }),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(right:16),
+                                  padding: const EdgeInsets.only(left:16),
                                   child: ListTileTheme(
                                     horizontalTitleGap: 0,
                                     child: ListTile(
