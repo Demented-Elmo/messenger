@@ -17,9 +17,19 @@ class _ChatScreenState extends State<ChatScreen> {
       if(sentOnce == false){
         str = "$name: $str"; 
         sentOnce = true;}
+      if(str.endsWith("has joined the chat!")){
+        str = "$str ";
+      }
+      if(str.endsWith("left the chat.")){
+        str = "$str ";
+      }
       setState(() {messages.insert(0, str);});
-      var dataToSend = {'message': str,'location': {'latitude': latitude, 'longitude': longitude,}};
-      channel.sink.add(jsonEncode(dataToSend));}
+      var dataToSend = {
+        'message': str,
+        'location': {'latitude': latitude, 'longitude': longitude,}
+      };
+      channel.sink.add(jsonEncode(dataToSend));
+    }
     msgController.clear();
     focusNode.requestFocus();
   }
@@ -137,7 +147,8 @@ class _ChatScreenState extends State<ChatScreen> {
                                 'message': str,
                                 'location': {'latitude': latitude, 'longitude': longitude,}
                               };
-                              channel.sink.add(jsonEncode(dataToSend));}
+                              channel.sink.add(jsonEncode(dataToSend));
+                            }
                             msgController.clear();
                             focusNode.requestFocus();
                           },
