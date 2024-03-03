@@ -150,7 +150,8 @@ class _UserState extends State<User> {
                     padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 15),
                     child: Align(
                       alignment: Alignment.center,
-                      child: SizedBox(
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 500),
                         width: double.infinity,
                         child: Row(
                           children: <Widget>[
