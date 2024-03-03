@@ -147,7 +147,7 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 0, top: 0, bottom: 15),
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 15),
                     child: Align(
                       alignment: Alignment.center,
                       child: SizedBox(
@@ -165,7 +165,7 @@ class _UserState extends State<User> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left:0),
                                   child: ListTileTheme(
-                                    horizontalTitleGap: 0,
+                                    horizontalTitleGap: 16,
                                     child: ListTile(
                                       title: const Text("Light Mode"),
                                       textColor: fg,
@@ -197,7 +197,7 @@ class _UserState extends State<User> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(right:0),
                                   child: ListTileTheme(
-                                    horizontalTitleGap: 0,
+                                    horizontalTitleGap: 16,
                                     child: ListTile(
                                       title: const Text("Dark Mode"),
                                       textColor: fg,
