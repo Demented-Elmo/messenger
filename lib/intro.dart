@@ -193,23 +193,26 @@ class _UserState extends State<User> {
                                   hint = const Color.fromARGB(228, 255, 255, 255);
                                   character = SingingCharacter.dark;
                                 }),
-                                child: ListTileTheme(
-                                  horizontalTitleGap: 0,
-                                  child: ListTile(
-                                    title: const Text("Dark Mode"),
-                                    textColor: fg,
-                                    leading: Radio<SingingCharacter>(
-                                      value: SingingCharacter.dark,
-                                      groupValue: character,
-                                      onChanged: (SingingCharacter? value){
-                                        setState(() {
-                                          fg = const Color.fromARGB(255, 255, 255, 255);
-                                          bg = const Color.fromARGB(255, 37, 37, 37);
-                                          hint = const Color.fromARGB(228, 255, 255, 255);
-                                          character = value;
-                                        });
-                                      },
-                                    )
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left:13),
+                                  child: ListTileTheme(
+                                    horizontalTitleGap: 0,
+                                    child: ListTile(
+                                      title: const Text("Dark Mode"),
+                                      textColor: fg,
+                                      leading: Radio<SingingCharacter>(
+                                        value: SingingCharacter.dark,
+                                        groupValue: character,
+                                        onChanged: (SingingCharacter? value){
+                                          setState(() {
+                                            fg = const Color.fromARGB(255, 255, 255, 255);
+                                            bg = const Color.fromARGB(255, 37, 37, 37);
+                                            hint = const Color.fromARGB(228, 255, 255, 255);
+                                            character = value;
+                                          });
+                                        },
+                                      )
+                                    ),
                                   ),
                                 ),
                               ),
