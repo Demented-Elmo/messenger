@@ -1,5 +1,3 @@
-import 'package:flutter/widgets.dart';
-
 import 'chat.dart';
 import 'dart:async';
 import 'variables.dart';
@@ -155,7 +153,8 @@ class _UserState extends State<User> {
                         width: double.infinity,
                         child: Row(
                           children: <Widget>[
-                            SizedBox(
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 250),
                               width: MediaQuery.of(context).size.width / 2,
                               child: InkWell(
                                 onTap: () =>  setState(() {
@@ -188,7 +187,8 @@ class _UserState extends State<User> {
                                 ),
                               ),
                             ),
-                            SizedBox(
+                            Container(
+                              constraints: const BoxConstraints(maxWidth: 250),
                               width: MediaQuery.of(context).size.width / 2,
                               child: InkWell(
                                 onTap: () =>  setState(() {
