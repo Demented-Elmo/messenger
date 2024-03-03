@@ -132,7 +132,8 @@ class _UserState extends State<User> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 5, bottom: 0),
-                    child: SizedBox(
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 337.837838),
                       width: MediaQuery.of(context).size.width / 1.48,
                       child: Slider(
                         inactiveColor: themeColorT2,
