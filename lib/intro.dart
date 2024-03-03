@@ -103,15 +103,19 @@ class _UserState extends State<User> {
                     child: Container(
                       clipBehavior: Clip.hardEdge,
                       decoration: BoxDecoration(border: Border.all(color: themeColor, width: 2), borderRadius: BorderRadius.circular(7)),
-                      child:  TextButton(
-                        style: TextButton.styleFrom(
-                          textStyle: const TextStyle(fontSize: 23),
-                          iconColor: themeColor,
-                          foregroundColor: themeColor,
-                          surfaceTintColor: themeColorT1,
+                      child: SizedBox(
+                        height:50,
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(1)),
+                            textStyle: const TextStyle(fontSize: 23),
+                            iconColor: themeColor,
+                            foregroundColor: themeColor,
+                            surfaceTintColor: themeColorT1,
+                          ),
+                          onPressed: _goToLocation, 
+                          child: const Text("My Location"),
                         ),
-                        onPressed: _goToLocation, 
-                        child: const Text("My Location"),
                       ),
                     ),
                   ),
@@ -133,46 +137,69 @@ class _UserState extends State<User> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, right: 10, top: 0, bottom: 15),
                     child: Align(
-                      alignment: Alignment.bottomCenter,
+                      alignment: Alignment.center,
                       child: SizedBox(
-                        width:340,
+                        width: double.infinity,
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: ListTile(
-                                title: const Text("Light Mode"),
-                                textColor: fg,
-                                leading: Radio<SingingCharacter>(
-                                  value: SingingCharacter.light,
-                                  groupValue: character,
-                                  onChanged: (SingingCharacter? value){
-                                    setState(() {
-                                      fg = const Color.fromARGB(255, 29, 29, 29);
-                                      bg = const Color.fromARGB(255, 255, 255, 255);
-                                      hint = const Color.fromARGB(255, 95, 95, 95);
-                                      character = value;
-                                    });
-                                  },
+                              child: InkWell(
+                                onTap: () =>  setState(() {
+                                  fg = const Color.fromARGB(255, 29, 29, 29);
+                                  bg = const Color.fromARGB(255, 255, 255, 255);
+                                  hint = const Color.fromARGB(255, 95, 95, 95);
+                                  character = SingingCharacter.light;
+                                }),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left:0),
+                                child: ListTileTheme(
+                                  horizontalTitleGap: 0,
+                                  child: ListTile(
+                                    title: const Text("Light Mode"),
+                                    textColor: fg,
+                                    leading: Radio<SingingCharacter>(
+                                      value: SingingCharacter.light,
+                                      groupValue: character,
+                                      onChanged: (SingingCharacter? value){
+                                        setState(() {
+                                          fg = const Color.fromARGB(255, 29, 29, 29);
+                                          bg = const Color.fromARGB(255, 255, 255, 255);
+                                          hint = const Color.fromARGB(255, 95, 95, 95);
+                                          character = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
                                 ),
                               ),
                             ),
                             Expanded(
-                              child: ListTileTheme(
-                                child: ListTile(
-                                  title: const Text("Dark Mode"),
-                                  textColor: fg,
-                                  leading: Radio<SingingCharacter>(
-                                    value: SingingCharacter.dark,
-                                    groupValue: character,
-                                    onChanged: (SingingCharacter? value){
-                                      setState(() {
-                                        fg = const Color.fromARGB(255, 255, 255, 255);
-                                        bg = const Color.fromARGB(255, 37, 37, 37);
-                                        hint = const Color.fromARGB(228, 255, 255, 255);
-                                        character = value;
-                                      });
-                                    },
-                                  )
+                              child: InkWell(
+                                onTap: () =>  setState(() {
+                                  fg = const Color.fromARGB(255, 255, 255, 255);
+                                  bg = const Color.fromARGB(255, 37, 37, 37);
+                                  hint = const Color.fromARGB(228, 255, 255, 255);
+                                  character = SingingCharacter.dark;
+                                }),
+                                child: ListTileTheme(
+                                  horizontalTitleGap: 0,
+                                  child: ListTile(
+                                    title: const Text("Dark Mode"),
+                                    textColor: fg,
+                                    leading: Radio<SingingCharacter>(
+                                      value: SingingCharacter.dark,
+                                      groupValue: character,
+                                      onChanged: (SingingCharacter? value){
+                                        setState(() {
+                                          fg = const Color.fromARGB(255, 255, 255, 255);
+                                          bg = const Color.fromARGB(255, 37, 37, 37);
+                                          hint = const Color.fromARGB(228, 255, 255, 255);
+                                          character = value;
+                                        });
+                                      },
+                                    )
+                                  ),
                                 ),
                               ),
                             ),
@@ -182,9 +209,9 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
+                    padding: const EdgeInsets.only(left: 20, right: 90, top: 0, bottom: 20),
                     child: SizedBox(
-                      width: 350,
+                      width: double.infinity,
                       child: Align(
                         alignment: Alignment.topCenter,
                         child: TextField(
