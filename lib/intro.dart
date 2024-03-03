@@ -12,6 +12,17 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
 
+  void _nameSubmitted(String nameRaw) {
+    sentOnce = false;
+    name = nameRaw.trim();
+    if(name.isEmpty == true){name = "Anonymous";}
+    usrController.clear();
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const ChatScreen()),
+    );
+  }
+
   Future<void> _getLocation() async {
     LocationData locationData = await location.getLocation();
     setState(() {
@@ -151,26 +162,26 @@ class _UserState extends State<User> {
                                   character = SingingCharacter.light;
                                 }),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left:0),
-                                child: ListTileTheme(
-                                  horizontalTitleGap: 0,
-                                  child: ListTile(
-                                    title: const Text("Light Mode"),
-                                    textColor: fg,
-                                    leading: Radio<SingingCharacter>(
-                                      value: SingingCharacter.light,
-                                      groupValue: character,
-                                      onChanged: (SingingCharacter? value){
-                                        setState(() {
-                                          fg = const Color.fromARGB(255, 29, 29, 29);
-                                          bg = const Color.fromARGB(255, 255, 255, 255);
-                                          hint = const Color.fromARGB(255, 95, 95, 95);
-                                          character = value;
-                                        });
-                                      },
+                                  padding: const EdgeInsets.only(left:20),
+                                  child: ListTileTheme(
+                                    horizontalTitleGap: 0,
+                                    child: ListTile(
+                                      title: const Text("Light Mode"),
+                                      textColor: fg,
+                                      leading: Radio<SingingCharacter>(
+                                        value: SingingCharacter.light,
+                                        groupValue: character,
+                                        onChanged: (SingingCharacter? value){
+                                          setState(() {
+                                            fg = const Color.fromARGB(255, 29, 29, 29);
+                                            bg = const Color.fromARGB(255, 255, 255, 255);
+                                            hint = const Color.fromARGB(255, 95, 95, 95);
+                                            character = value;
+                                          });
+                                        },
+                                      ),
                                     ),
                                   ),
-                                ),
                                 ),
                               ),
                             ),
@@ -208,37 +219,57 @@ class _UserState extends State<User> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 90, top: 0, bottom: 20),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: TextField(
-                          controller: usrController,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:1.5)),
-                              focusedBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
-                              hintText: 'Set your username...',
-                              hintStyle: TextStyle(color:hint)),
-                          style: TextStyle(color: fg),
-                          onSubmitted: (String nameRaw) {
-                            sentOnce = false;
-                            name = nameRaw.trim();
-                            if(name.isEmpty == true){name = "Anonymous";}
-                            usrController.clear();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => const ChatScreen()),
-                            );
-                          },
+                  Row(
+                    children: [
+                      Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 10, top: 0, bottom: 20),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Align(
+                            alignment: Alignment.topCenter,
+                            child: TextField(
+                              controller: usrController,
+                              autofocus: false,
+                              decoration: InputDecoration(
+                                  border: const OutlineInputBorder(),
+                                  enabledBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:2)),
+                                  focusedBorder: const OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
+                                  hintText: 'Set your username...',
+                                  hintStyle: TextStyle(color:hint)),
+                              style: TextStyle(color: fg),
+                              onSubmitted: (String nameRaw) {
+                                sentOnce = false;
+                                name = nameRaw.trim();
+                                if(name.isEmpty == true){name = "Anonymous";}
+                                usrController.clear();
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 0, right: 20, top: 0, bottom: 17),
+                        child: SizedBox(
+                          child: Align(
+                            alignment: Alignment.bottomRight,
+                              child: IconButton(
+                                color: themeColor,
+                                hoverColor: themeColorT1,
+                                highlightColor: themeColorT2,
+                                icon: const Icon(Icons.send),
+                                onPressed: () => _nameSubmitted(msgController.text)),
+                          ),
+                        ),
+                      ),
+                    ]
                   ),
                 ],
               ),
