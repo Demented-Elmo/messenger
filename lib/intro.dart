@@ -12,8 +12,6 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
 
-  double radius = 50;
-
   Future<void> _getLocation() async {
     LocationData locationData = await location.getLocation();
     setState(() {
@@ -26,12 +24,7 @@ class _UserState extends State<User> {
   Future<void> _goToLocation() async {
     if (currentLocation.latitude == 0.0 && currentLocation.longitude == 0.0) {await _getLocation();}
     final GoogleMapController controller = await mapsController.future;
-    
-    final newCameraPosition = CameraPosition(
-      target: currentLocation,
-      zoom: 17.0,
-      tilt: 45.0,);
-
+    final newCameraPosition = CameraPosition(target: currentLocation, zoom: 17.0, tilt: 45.0);
     controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
     
     circles.clear();
@@ -44,10 +37,7 @@ class _UserState extends State<User> {
       strokeColor: Colors.blue,
       strokeWidth: 3,
     );
-
     circles.add(circle);
-
-
 
     markers.clear();
     const MarkerId markerId = MarkerId('userlocation_marker');
@@ -59,12 +49,11 @@ class _UserState extends State<User> {
     );
     markers.add(marker);
   }
+
   void updateRadius(double newRadius) {
-      setState(() {
-        radius = newRadius;
-      });
-      _goToLocation();
-    }
+    setState(() {radius = newRadius;});
+    _goToLocation();
+  }
 
   @override
   Widget build(BuildContext context) {
