@@ -194,7 +194,7 @@ class _UserState extends State<User> {
                                   character = SingingCharacter.dark;
                                 }),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left:13),
+                                  padding: const EdgeInsets.only(right:16),
                                   child: ListTileTheme(
                                     horizontalTitleGap: 0,
                                     child: ListTile(
