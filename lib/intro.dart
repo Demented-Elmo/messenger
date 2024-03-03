@@ -146,16 +146,14 @@ class _UserState extends State<User> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 15),
+                    padding: const EdgeInsets.only(left: 20, right: 0, top: 0, bottom: 15),
                     child: Align(
                       alignment: Alignment.center,
                       child: SizedBox(
                         width: double.infinity,
                         child: Row(
                           children: <Widget>[
-                            Container(
-                              constraints: const BoxConstraints(maxWidth: 250),
-                              width: MediaQuery.of(context).size.width / 2,
+                            Expanded(
                               child: InkWell(
                                 onTap: () =>  setState(() {
                                   fg = const Color.fromARGB(255, 29, 29, 29);
@@ -164,7 +162,7 @@ class _UserState extends State<User> {
                                   character = SingingCharacter.light;
                                 }),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left:16),
+                                  padding: const EdgeInsets.only(left:0),
                                   child: ListTileTheme(
                                     horizontalTitleGap: 0,
                                     child: ListTile(
@@ -187,9 +185,7 @@ class _UserState extends State<User> {
                                 ),
                               ),
                             ),
-                            Container(
-                              constraints: const BoxConstraints(maxWidth: 250),
-                              width: MediaQuery.of(context).size.width / 2,
+                            Expanded(
                               child: InkWell(
                                 onTap: () =>  setState(() {
                                   fg = const Color.fromARGB(255, 255, 255, 255);
@@ -198,7 +194,7 @@ class _UserState extends State<User> {
                                   character = SingingCharacter.dark;
                                 }),
                                 child: Padding(
-                                  padding: const EdgeInsets.only(left:16),
+                                  padding: const EdgeInsets.only(right:0),
                                   child: ListTileTheme(
                                     horizontalTitleGap: 0,
                                     child: ListTile(
