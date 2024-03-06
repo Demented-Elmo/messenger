@@ -1,14 +1,20 @@
-import { WebSocketServer } from 'ws';
+const WebSocket = require("ws");
 
-const server = new WebSocketServer({ port: 8080 });
+const server = new WebSocket.Server({port: 4040});
 let leftCount = 1;
 let conId = 0;
 let list = 0;
 let loc = [];
-let connectionMap = new Map();
+const connectionMap = new Map();
 let hasMessage = true;
 
-function getDistance(coord1, coord2) {
+/**
+ * Calculates the distance between two coordinates.
+ * @param {Object} coord1 - First coordinate.
+ * @param {Object} coord2 - Second coordinate.
+ * @return {number} The distance between the coordinates.
+ */
+const getDistance = (coord1, coord2) => {
   const lat1 = coord1.latitude;
   const lon1 = coord1.longitude;
   const lat2 = coord2.latitude;
@@ -22,18 +28,18 @@ function getDistance(coord1, coord2) {
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) * Math.cos((lat2 * Math.PI) / 180) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
   const distance = R * c;
   console.log(distance);
   return distance;
-}
+};
 
-server.on('connection', function connection(ws) {
+server.on("connection", (ws) => {
   list += 1;
-  server.clients.forEach(function each(client) {
+  server.clients.forEach((client) => {
     client.send(list);
   });
 
@@ -45,11 +51,11 @@ server.on('connection', function connection(ws) {
     leftCount--;
   }
 
-  ws.on('message', function incoming(data) {
+  ws.on("message", (data) => {
     try {
-      var incomingData = JSON.parse(data);
-      var message = incomingData.message;
-      var location = incomingData.location;
+      const incomingData = JSON.parse(data);
+      const message = incomingData.message;
+      const location = incomingData.location;
 
       if (location) {
         loc.push({
@@ -73,9 +79,9 @@ server.on('connection', function connection(ws) {
 
       if (hasMessage && message) {
         console.log(message);
-        server.clients.forEach(function each(client) {
+        server.clients.forEach((client) => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
-            //client.send("m" + message);
+            // client.send("m" + message);
           }
         });
       } else {
@@ -83,10 +89,10 @@ server.on('connection', function connection(ws) {
       }
     } catch (error) {
       console.log(error + "\n");
-      console.log('OUTDATED MESSAGE FORMAT!');
-      console.log('Received message: ' + data);
+      console.log("OUTDATED MESSAGE FORMAT!");
+      console.log("Received message: " + data);
 
-      server.clients.forEach(function each(client) {
+      server.clients.forEach((client) => {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           client.send("m" + data);
         }
@@ -94,10 +100,10 @@ server.on('connection', function connection(ws) {
     }
   });
 
-  ws.on('close', () => {
+  ws.on("close", () => {
     let removeId = ws.connectionId;
     connectionMap.delete(removeId);
-    for (i = 0; i < conId; i++) {
+    for (let i = 0; i < conId; i++) {
       const filter = i;
       const filtered = filter - 1;
       if (filter > removeId) {
@@ -122,7 +128,7 @@ server.on('connection', function connection(ws) {
       conId = 0;
     }
     console.log("User Locations:", loc);
-    server.clients.forEach(function each(client) {
+    server.clients.forEach((client) => {
       client.send(list);
     });
   });

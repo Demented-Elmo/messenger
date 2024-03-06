@@ -9,7 +9,7 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() {return _ChatScreenState();}}
 
 class _ChatScreenState extends State<ChatScreen> {
-  final channel = WebSocketChannel.connect(Uri.parse('wss://websocket.dementedelmo.repl.co'));
+  final channel = WebSocketChannel.connect(Uri.parse('wss://us-central1-de-messenger.cloudfunctions.net/websocket'));
 
   void _handleSubmitted(String str) {
     str = str.trimRight();
