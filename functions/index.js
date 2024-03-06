@@ -139,7 +139,7 @@ server.on("connection", (ws) => {
 });
 
 exports.webSocketServer = functions.https.onRequest((req, res) => {
-  if (req.method === "GET" && req.url === "/websocket") {
+  if (req.method === "GET" && req.url === "/webSocketServer") {
     server.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
       server.emit("connection", ws, req);
     });
