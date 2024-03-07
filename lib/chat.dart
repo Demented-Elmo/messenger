@@ -3,13 +3,14 @@ import 'variables.dart';
 import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
+
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
   @override
   State<ChatScreen> createState() {return _ChatScreenState();}}
 
 class _ChatScreenState extends State<ChatScreen> {
-  final channel = WebSocketChannel.connect(Uri.parse('wss://us-central1-de-messenger.cloudfunctions.net:8080/webSocketServer'));
+final channel = WebSocketChannel.connect(Uri.parse('wss://us-central1-de-messenger.cloudfunctions.net/websocket'));
 
   void _handleSubmitted(String str) {
     str = str.trimRight();

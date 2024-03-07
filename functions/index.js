@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 
-const server = new WebSocket.Server({port: 8080});
+const server = new WebSocket.Server({port: 9191});
 let leftCount = 1;
 let conId = 0;
 let list = 0;
@@ -139,7 +139,7 @@ server.on("connection", (ws) => {
 });
 
 exports.webSocketServer = functions.https.onRequest((req, res) => {
-  if (req.method === "GET" && req.url === "/webSocketServer") {
+  if (req.method === "GET" && req.url === "/websocket") {
     server.handleUpgrade(req, req.socket, Buffer.alloc(0), (ws) => {
       server.emit("connection", ws, req);
     });
