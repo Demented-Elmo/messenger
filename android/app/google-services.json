@@ -13,7 +13,20 @@
           "package_name": "com.messenger.dementedelmo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "373948894454-djaaf6n29o0o3bp63i7opcp1e266hdbe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.messenger.dementedelmo",
+            "certificate_hash": "e01935abf6a9961b2eb3346461137ec98468a50c"
+          }
+        },
+        {
+          "client_id": "373948894454-otjr63jceq6m8ia0hnj09pv3p33kmfdp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCkPHjQK2bBLqW2J0NR5vU7k2jfpSXCNBU"
@@ -21,7 +34,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "373948894454-otjr63jceq6m8ia0hnj09pv3p33kmfdp.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "373948894454-c8dffjetitf69oggt4mkanfn54ukpcge.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.messenger"
+              }
+            }
+          ]
         }
       }
     }

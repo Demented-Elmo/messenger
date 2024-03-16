@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 String name = "";
 int users = 0;
@@ -13,6 +14,7 @@ List<String> messages = [];
 List<Circle> circles = [];
 List<Marker> markers = [];
 var focusNode = FocusNode();
+GoogleSignInAccount? currentUser;
 enum SingingCharacter {light, dark}
 final Location location = Location();
 LatLng currentLocation = const LatLng(0, 0);

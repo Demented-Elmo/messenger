@@ -41,6 +41,10 @@ dependencies:
   geolocator: ^11.0.0
   location: ^5.0.3
   firebase_core: ^2.24.2
+  firebase_auth: ^4.16.0
+  google_sign_in: ^6.2.1
+  http: ^1.2.1
+  firebase_database: ^10.4.10
 
 dev_dependencies:
   flutter_test:
@@ -83,6 +87,7 @@ flutter:
   uses-material-design: true
   assets:
   - images/Messenger.png
+  - images/google_icon.jpeg
 
   # To add assets to your application, add an assets section, like this:
   # assets:

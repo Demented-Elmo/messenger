@@ -56,5 +56,18 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>FLTEnableImpeller</key>
+	<false/>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>com.googleusercontent.apps.373948894454-o8djjap94gospfjd505u8i6m732t2lpi</string>
+            </array>
+        </dict>
+    </array>
 </dict>
 </plist>
