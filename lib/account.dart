@@ -85,6 +85,12 @@ class _LoginState extends State<Login> {
         children: [
           Center(
             child: ElevatedButton(onPressed: handleSingIn, child: const Text('Sign in')),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: ElevatedButton(onPressed: _accountComplete, child: const Text('Skip (Dev)')),
+            ),
           )
         ],
       );

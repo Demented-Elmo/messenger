@@ -28,12 +28,16 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _sendMessage('$name has joined the chat!');
+    if(firstJoin==false){_sendMessage('$name has joined the chat!');}
     _messageRef.onChildAdded.listen((event) {
       setState(() {
         Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
         String message = value['message'];
         messages.insert(0, message);
+        if(firstJoin==true){
+          _sendMessage('$name has joined the chat!');
+          firstJoin=false;
+        }
       });
     });
   }
@@ -43,8 +47,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (str.isNotEmpty) {
       if (sentOnce == false) {
         str = "$name: $str";
-        sentOnce = true;
-      }
+        sentOnce = true;}
       if (str.endsWith("has joined the chat!")) {str = "$str ";}
       if (str.endsWith("left the chat.")) {str = "$str ";}
       _sendMessage(str);
@@ -163,7 +166,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       onPressed:() {
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => const User()), );
+                          MaterialPageRoute(builder: (context) => const User()));
                           }, 
                       icon: const Icon(Icons.arrow_back)
                     ),
