@@ -231,7 +231,7 @@ class _UserState extends State<User> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20, right: 10, top: 0, bottom: 20),
+                              padding: const EdgeInsets.only(left: 20, right: 20, top: 0, bottom: 20),
                               child: SizedBox(
                                 width: double.infinity,
                                 child: Align(

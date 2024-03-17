@@ -29,11 +29,11 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     _sendMessage('$name has joined the chat!');
-    messages.insert(0, '$name has joined the chat!');
     _messageRef.onChildAdded.listen((event) {
       setState(() {
         Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
-        value['message'];
+        String message = value['message'];
+        messages.insert(0, message);
       });
     });
   }
@@ -47,7 +47,6 @@ class _ChatScreenState extends State<ChatScreen> {
       }
       if (str.endsWith("has joined the chat!")) {str = "$str ";}
       if (str.endsWith("left the chat.")) {str = "$str ";}
-      setState(() {messages.insert(0, str);});
       _sendMessage(str);
     }
     _msgController.clear();
@@ -89,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
                           children: [
                             Expanded(
                               child: Padding(
-                                padding: const EdgeInsets.only(left: 15, right: 10),
+                                padding: const EdgeInsets.only(left: 17, right: 17),
                                 child: SizedBox(
                                   width: double.infinity,
                                   child: Align(
