@@ -1,4 +1,3 @@
-import 'intro.dart';
 import 'account.dart';
 import 'variables.dart';
 import 'firebase_options.dart';
@@ -27,7 +26,7 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: themeColor,
         unselectedWidgetColor:themeColor),
-      home: const User(),
+      home: const Login(),
     );
   }
 }
