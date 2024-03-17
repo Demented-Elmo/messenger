@@ -30,6 +30,12 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     _sendMessage('$name has joined the chat!');
     messages.insert(0, '$name has joined the chat!');
+    _messageRef.onChildAdded.listen((event) {
+      setState(() {
+        Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
+        value['message'];
+      });
+    });
   }
 
   void _handleSubmitted(String str) {
@@ -73,65 +79,57 @@ class _ChatScreenState extends State<ChatScreen> {
                   Positioned(
                     left: 0,
                     right: 0,
-                    bottom: 40,
-                    child: Container(
-                      width: double.infinity,
-                      decoration: BoxDecoration(color: bg),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 10, top: 0, bottom: 0),
-                              child: SizedBox(
-                                width: double.infinity,
-                                child: Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: TextField(
-                                    focusNode: _focusNode,
-                                    controller: _msgController,
-                                    autofocus: true,
-                                    decoration: InputDecoration(
-                                      border: const OutlineInputBorder(),
-                                      hintText: 'Type a message...',
-                                      hintStyle: TextStyle(color: hint),
+                    bottom: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 50),
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(color: bg),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15, right: 10),
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: TextField(
+                                      focusNode: _focusNode,
+                                      controller: _msgController,
+                                      autofocus: true,
+                                      decoration: InputDecoration(
+                                        border: const OutlineInputBorder(),
+                                        hintText: 'Type a message...',
+                                        hintStyle: TextStyle(color: hint),
+                                        suffixIcon: IconButton(
+                                          color: themeColor,
+                                          hoverColor: themeColorT1,
+                                          highlightColor: themeColorT2,
+                                          icon: const Icon(Icons.send),
+                                          onPressed: () => _handleSubmitted(_msgController.text),
+                                        ),
+                                      ),
+                                      style: TextStyle(color: fg),
+                                      onSubmitted: _handleSubmitted,
                                     ),
-                                    style: TextStyle(color: fg),
-                                    onSubmitted: _handleSubmitted,
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                left: 0, right: 10, top: 0, bottom: 0),
-                            child: SizedBox(
-                              height: 40,
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                child: IconButton(
-                                  color: themeColor,
-                                  hoverColor: themeColorT1,
-                                  highlightColor: themeColorT2,
-                                  icon: const Icon(Icons.send),
-                                  onPressed: () => _handleSubmitted(_msgController.text),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
                   Positioned(
                     left: 0,
+                    top: 0,
                     right: 0,
-                    bottom: 90,
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
+                    bottom: 115,
                       child: ListView.builder(
                         reverse: true,
+                        padding: const EdgeInsets.only(top: 0, bottom: 17),
                         itemCount: messages.length,
                         itemBuilder: (context, index) {
                           return ListTile(
@@ -144,13 +142,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                     : FontWeight.normal,
                               ),
                             ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 0, horizontal: 17),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 17),
                             textColor: fg,
                           );
                         },
                       ),
-                    ),
                   ),
                 ],
               ),

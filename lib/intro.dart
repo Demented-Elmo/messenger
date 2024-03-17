@@ -230,50 +230,44 @@ class _UserState extends State<User> {
                       Row(
                         children: [
                           Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 10, top: 0, bottom: 20),
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: Align(
-                                alignment: Alignment.topCenter,
-                                child: TextField(
-                                  controller: usrController,
-                                  autofocus: false,
-                                  decoration: InputDecoration(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 10, top: 0, bottom: 20),
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Align(
+                                  alignment: Alignment.topCenter,
+                                  child: TextField(
+                                    controller: usrController,
+                                    autofocus: false,
+                                    decoration: InputDecoration(
                                       border: const OutlineInputBorder(),
                                       enabledBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:2)),
+                                      borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:2)),
                                       focusedBorder: const OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
+                                      borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
                                       hintText: 'Set your username...',
-                                      hintStyle: TextStyle(color:hint)),
-                                  style: TextStyle(color: fg),
-                                  onSubmitted: (String nameRaw) {
-                                    sentOnce = false;
-                                    name = nameRaw.trim();
-                                    if(name.isEmpty == true){name = "Anonymous";}
-                                    usrController.clear();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => const ChatScreen()),
-                                    );
-                                  },
+                                      hintStyle: TextStyle(color:hint),
+                                      suffixIcon: IconButton(
+                                        color: themeColor,
+                                        hoverColor: themeColorT1,
+                                        highlightColor: themeColorT2,
+                                        icon: const Icon(Icons.send),
+                                        onPressed: () => _nameSubmitted(msgController.text),
+                                      ),
+                                    ),
+                                    style: TextStyle(color: fg),
+                                    onSubmitted: (String nameRaw) {
+                                      sentOnce = false;
+                                      name = nameRaw.trim();
+                                      if(name.isEmpty == true){name = "Anonymous";}
+                                      usrController.clear();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 0, right: 20, top: 0, bottom: 17),
-                            child: SizedBox(
-                              child: Align(
-                                alignment: Alignment.bottomRight,
-                                  child: IconButton(
-                                    color: themeColor,
-                                    hoverColor: themeColorT1,
-                                    highlightColor: themeColorT2,
-                                    icon: const Icon(Icons.send),
-                                    onPressed: () => _nameSubmitted(msgController.text)),
                               ),
                             ),
                           ),
