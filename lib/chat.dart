@@ -1,12 +1,8 @@
-import 'package:flutter/widgets.dart';
-
 import 'variables.dart';
 import 'intro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 //TODO: User's messages on one side, possibly email validation?
-//TODO: User Count
-//P.S. for user count just add json value to a variable (join: 1, message: 0, leave: -1) *DOESN'T WORK, LOOK AT 
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -18,8 +14,9 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final DatabaseReference _messageRef = FirebaseDatabase.instance.ref().child('messages');
   final TextEditingController _msgController = TextEditingController();
+  late final AppLifecycleListener _listener;
   final FocusNode _focusNode = FocusNode();
-  int users = 0;
+  int users = -1;
 
   @override
   void setState(fn) {if(mounted) {super.setState(fn);}}
@@ -37,7 +34,11 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    if(firstJoin==false){_sendMessage('$name has joined the chat!', name, true, 1);}
+    _listener = AppLifecycleListener(
+      onDetach: () {
+        _sendMessage('$name has left the chat.', name, true, -1);
+      },
+    );
     _messageRef.onChildAdded.listen((event) {
       setState(() {
         Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
@@ -72,6 +73,8 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void dispose() {
+    firstJoin = true;
+    _listener.dispose();
     _sendMessage('$name has left the chat.', name, true, -1);
     _msgController.dispose();
     _focusNode.dispose();
