@@ -3,7 +3,6 @@ import 'package:location/location.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 String name = "";
-int users = 1;
 double radius = 50;
 double latitude = 0;
 double longitude = 0;

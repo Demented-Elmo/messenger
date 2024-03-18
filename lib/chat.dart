@@ -1,10 +1,12 @@
+import 'package:flutter/widgets.dart';
+
 import 'variables.dart';
 import 'intro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-//TODO: User's messages on one side
+//TODO: User's messages on one side, possibly email validation?
 //TODO: User Count
-//P.S. for user count just add json value to a variable (join: 1, message: 0, leave: -1)
+//P.S. for user count just add json value to a variable (join: 1, message: 0, leave: -1) *DOESN'T WORK, LOOK AT 
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -17,6 +19,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final DatabaseReference _messageRef = FirebaseDatabase.instance.ref().child('messages');
   final TextEditingController _msgController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
+  int users = 0;
 
   @override
   void setState(fn) {if(mounted) {super.setState(fn);}}
@@ -42,11 +45,10 @@ class _ChatScreenState extends State<ChatScreen> {
         String ?username = value['username'];
         bool ?joinMessage = value['joinMessage'];
         int ?userCount = value['userCount'];
-        if(message != null && username !=null && joinMessage !=null && userCount != null){
-          users = users + userCount!;
-          print(users);
+        if(message != null && username !=null && joinMessage !=null){
           usernames.insert(0, username);
           joins.insert(0, joinMessage);
+          if(userCount!=null){users = users + userCount;}
           if(firstJoin==true){
             _sendMessage('$name has joined the chat!', name, true, 1);
             firstJoin=false;}
@@ -167,13 +169,15 @@ class _ChatScreenState extends State<ChatScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 8, top: 8),
                 child: Container(
+                  height: 48,
+                  width: 48,
                   decoration: BoxDecoration(
                     color: themeColor,
                     borderRadius: BorderRadius.circular(13),
                   ),
                   child: IconTheme(
-                    data: const IconThemeData(
-                    color: Colors.white),
+                    data: IconThemeData(
+                    color: bg),
                     child: IconButton(
                       onPressed:() {
                         Navigator.pushReplacement(
@@ -183,6 +187,25 @@ class _ChatScreenState extends State<ChatScreen> {
                       icon: const Icon(Icons.arrow_back)
                     ),
                   ),
+                ),
+              ),
+              Positioned(
+                right:8,
+                top:8,
+                child: Container(
+                  height: 48,
+                  width: 48,
+                  decoration: BoxDecoration(
+                    color: themeColor,
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: Center(
+                    child: Text(
+                      '$users',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: bg, fontSize: 25),
+                    ),
+                  )
                 ),
               ),
             ],
