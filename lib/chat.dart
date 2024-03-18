@@ -2,6 +2,9 @@ import 'variables.dart';
 import 'intro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+//TODO: User's messages on one side
+//TODO: User Count
+//P.S. for user count just add json value to a variable (join: 1, message: 0, leave: -1)
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -18,30 +21,34 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void setState(fn) {if(mounted) {super.setState(fn);}}
 
-  void _sendMessage(String message, String username, bool join) {
+  void _sendMessage(String message, String username, bool join, int count) {
     _messageRef.push().set({
       'message': message,
       'location': {'latitude': latitude, 'longitude': longitude},
       'username': username,
       'joinMessage': join,
+      'userCount': count,
     });
   }
 
   @override
   void initState() {
     super.initState();
-    if(firstJoin==false){_sendMessage('$name has joined the chat!', name, true);}
+    if(firstJoin==false){_sendMessage('$name has joined the chat!', name, true, 1);}
     _messageRef.onChildAdded.listen((event) {
       setState(() {
         Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
         String ?message = value['message'];
         String ?username = value['username'];
         bool ?joinMessage = value['joinMessage'];
-        if(message != null && username !=null && joinMessage !=null){
+        int ?userCount = value['userCount'];
+        if(message != null && username !=null && joinMessage !=null && userCount != null){
+          users = users + userCount!;
+          print(users);
           usernames.insert(0, username);
           joins.insert(0, joinMessage);
           if(firstJoin==true){
-            _sendMessage('$name has joined the chat!', name, true);
+            _sendMessage('$name has joined the chat!', name, true, 1);
             firstJoin=false;}
           else if(joinMessage==true){messages.insert(0, message);}
           else if((joins[1]==true)){messages.insert(0, "$username: $message");}
@@ -56,14 +63,14 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _handleSubmitted(String str) {
     str = str.trimRight();
-    if (str.isNotEmpty) {_sendMessage(str, name, false);}
+    if (str.isNotEmpty) {_sendMessage(str, name, false, 0);}
     _msgController.clear();
     _focusNode.requestFocus();
   }
 
   @override
   void dispose() {
-    _sendMessage('$name has left the chat.', name, true);
+    _sendMessage('$name has left the chat.', name, true, -1);
     _msgController.dispose();
     _focusNode.dispose();
     super.dispose();
