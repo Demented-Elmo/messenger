@@ -13,16 +13,25 @@ class User extends StatefulWidget {
 
 class _UserState extends State<User> {
   final Completer<GoogleMapController> mapsController = Completer<GoogleMapController>();
+  String usernameHintText = 'Set your username...';
 
   void _nameSubmitted(String nameRaw) {
-    sentOnce = false;
-    name = nameRaw.trim();
-    if(name.isEmpty == true){name = "Anonymous";}
-    usrController.clear();
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ChatScreen()),
-    );
+    if(gotLocation==true){
+      sentOnce = false;
+      name = nameRaw.trim();
+      if(name.isEmpty == true){name = "Anonymous";}
+      usrController.clear();
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ChatScreen()),
+      );
+    }
+    else{
+      setState(() {
+        usrController.clear();
+        usernameHintText = 'Please get your location first!';
+      });
+    }
   }
 
   Future<void> _getLocation() async {
@@ -36,6 +45,7 @@ class _UserState extends State<User> {
 
   Future<void> _goToLocation() async {
     if (currentLocation.latitude == 0.0 && currentLocation.longitude == 0.0) {await _getLocation();}
+    gotLocation = true;
     final GoogleMapController controller = await mapsController.future;
     final newCameraPosition = CameraPosition(target: currentLocation, zoom: 17.0, tilt: 45.0);
     controller.animateCamera(CameraUpdate.newCameraPosition(newCameraPosition));
@@ -245,7 +255,7 @@ class _UserState extends State<User> {
                                 borderSide: BorderSide(color: Color.fromARGB(167, 104, 58, 183), width:2)),
                                 focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.deepPurple, width: 2.3)),
-                                hintText: 'Set your username...',
+                                hintText: usernameHintText,
                                 hintStyle: TextStyle(color:hint),
                                 suffixIcon: Padding(
                                   padding: const EdgeInsets.only(right:8),
@@ -260,14 +270,22 @@ class _UserState extends State<User> {
                               ),
                               style: TextStyle(color: fg),
                               onSubmitted: (String nameRaw) {
-                                sentOnce = false;
-                                name = nameRaw.trim();
-                                if(name.isEmpty == true){name = "Anonymous";}
-                                usrController.clear();
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const ChatScreen()),
-                                );
+                                if(gotLocation==true){
+                                  sentOnce = false;
+                                  name = nameRaw.trim();
+                                  if(name.isEmpty == true){name = "Anonymous";}
+                                  usrController.clear();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                  );
+                                }
+                                else{
+                                  setState(() {
+                                    usrController.clear();
+                                    usernameHintText = 'Please get your location first!';
+                                  });
+                                }
                               },
                             ),
                           ),

@@ -9,6 +9,7 @@ double longitude = 0;
 bool firstJoin = true;
 bool sentOnce = true;
 bool joinedOnce = false;
+bool gotLocation = false;
 List<String> messages = [];
 List<String> usernames = [];
 List<bool> joins = [];
