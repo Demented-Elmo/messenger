@@ -11,12 +11,11 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen> with WidgetsBindingObserver{
   final DatabaseReference _messageRef = FirebaseDatabase.instance.ref().child('messages');
   final TextEditingController _msgController = TextEditingController();
-  late final AppLifecycleListener _listener;
   final FocusNode _focusNode = FocusNode();
-  int users = -1;
+  int users = 0;
 
   @override
   void setState(fn) {if(mounted) {super.setState(fn);}}
@@ -34,11 +33,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _listener = AppLifecycleListener(
-      onDetach: () {
-        _sendMessage('$name has left the chat.', name, true, -1);
-      },
-    );
+    WidgetsBinding.instance.addObserver(this);
     _messageRef.onChildAdded.listen((event) {
       setState(() {
         Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
@@ -64,6 +59,15 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state){
+    super.didChangeAppLifecycleState(state);
+    final isClosed = state == AppLifecycleState.detached;
+    if(isClosed){
+      _sendMessage('$name has left the chat.', name, true, -1);
+    }
+  }
+
   void _handleSubmitted(String str) {
     str = str.trimRight();
     if (str.isNotEmpty) {_sendMessage(str, name, false, 0);}
@@ -74,8 +78,8 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void dispose() {
     firstJoin = true;
-    _listener.dispose();
     _sendMessage('$name has left the chat.', name, true, -1);
+    WidgetsBinding.instance.removeObserver(this);
     _msgController.dispose();
     _focusNode.dispose();
     super.dispose();
@@ -192,6 +196,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
               ),
+              /*
+              Reset User Count Later, too many bugs
               Positioned(
                 right:8,
                 top:8,
@@ -211,6 +217,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   )
                 ),
               ),
+              */
             ],
           ),
         ),
