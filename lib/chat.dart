@@ -31,26 +31,25 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-    _sendMessage('$name has joined the chat!', name, true);
+    if(firstJoin==false){_sendMessage('$name has joined the chat!', name, true);}
     _messageRef.onChildAdded.listen((event) {
       setState(() {
         Map<dynamic, dynamic> value = event.snapshot.value as Map<dynamic, dynamic>;
-        String message = value['message'];
-        String username = value['username'];
-        usernames.insert(0, username);
-        bool joinMessage = value['joinMessage'];
-        joins.insert(0, joinMessage);
-        if(joinMessage==true){
-          messages.insert(0, message);
-        }
-        else if((joins[1]==true)){
-          messages.insert(0, "$username: $message");
-        }
-        else if ((username.length >= 2 && username == usernames[1])) {
-          messages.insert(0, message);
-        }
-        else{
-          messages.insert(0, "$username: $message");
+        String ?message = value['message'];
+        String ?username = value['username'];
+        bool ?joinMessage = value['joinMessage'];
+        if(message != null && username !=null && joinMessage !=null){
+          usernames.insert(0, username);
+          joins.insert(0, joinMessage);
+          if(firstJoin==true){
+            _sendMessage('$name has joined the chat!', name, true);
+            firstJoin=false;}
+          else if(joinMessage==true){messages.insert(0, message);}
+          else if((joins[1]==true)){messages.insert(0, "$username: $message");}
+          else if(username.length >= 2){
+            if (username == usernames[1]) {messages.insert(0, message);}
+            else{messages.insert(0, "$username: $message");}}
+          else{messages.insert(0, "$username: $message");}
         }
       });
     });
@@ -58,9 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   void _handleSubmitted(String str) {
     str = str.trimRight();
-    if (str.isNotEmpty) {
-      _sendMessage(str, name, false);
-    }
+    if (str.isNotEmpty) {_sendMessage(str, name, false);}
     _msgController.clear();
     _focusNode.requestFocus();
   }
