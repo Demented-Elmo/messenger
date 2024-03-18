@@ -19,14 +19,14 @@ void main() async{
 class Main extends StatelessWidget {
   const Main({super.key});
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
+  Widget build(BuildContext context) => GestureDetector(onTap:(){FocusManager.instance.primaryFocus?.unfocus();},
+    child: MaterialApp(
       title: 'Messenger App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: themeColor,
         unselectedWidgetColor:themeColor),
       home: const Login(),
-    );
-  }
+    ),
+  );
 }

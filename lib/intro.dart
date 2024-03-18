@@ -69,8 +69,8 @@ class _UserState extends State<User> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget build(BuildContext context) => GestureDetector(onTap:(){FocusManager.instance.primaryFocus?.unfocus();},
+    child: Scaffold(
       appBar: AppBar(backgroundColor: themeColor, toolbarHeight: 5),
       backgroundColor: Colors.black,
       body: Center(
@@ -302,6 +302,6 @@ class _UserState extends State<User> {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
 }

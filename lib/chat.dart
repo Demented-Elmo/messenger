@@ -2,7 +2,6 @@ import 'variables.dart';
 import 'intro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-//TODO: Username handling
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
