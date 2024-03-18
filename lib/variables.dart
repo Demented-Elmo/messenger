@@ -6,6 +6,7 @@ String name = "";
 double radius = 50;
 double latitude = 0;
 double longitude = 0;
+bool testing = false;
 bool firstJoin = true;
 bool sentOnce = true;
 bool joinedOnce = false;

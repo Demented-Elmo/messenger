@@ -16,7 +16,25 @@ class _UserState extends State<User> {
   String usernameHintText = 'Set your username...';
 
   void _nameSubmitted(String nameRaw) {
-    if(gotLocation==true){
+    if(testing == false){
+      if(gotLocation==true){
+        sentOnce = false;
+        name = nameRaw.trim();
+        if(name.isEmpty == true){name = "Anonymous";}
+        usrController.clear();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ChatScreen()),
+        );
+      }
+      else{
+        setState(() {
+          usrController.clear();
+          usernameHintText = 'Please get your location first!';
+        });
+      }
+    }
+    else{
       sentOnce = false;
       name = nameRaw.trim();
       if(name.isEmpty == true){name = "Anonymous";}
@@ -25,12 +43,6 @@ class _UserState extends State<User> {
         context,
         MaterialPageRoute(builder: (context) => const ChatScreen()),
       );
-    }
-    else{
-      setState(() {
-        usrController.clear();
-        usernameHintText = 'Please get your location first!';
-      });
     }
   }
 
@@ -270,7 +282,25 @@ class _UserState extends State<User> {
                               ),
                               style: TextStyle(color: fg),
                               onSubmitted: (String nameRaw) {
-                                if(gotLocation==true){
+                                if(testing == false){
+                                  if(gotLocation==true){
+                                    sentOnce = false;
+                                    name = nameRaw.trim();
+                                    if(name.isEmpty == true){name = "Anonymous";}
+                                    usrController.clear();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => const ChatScreen()),
+                                    );
+                                  }
+                                  else{
+                                    setState(() {
+                                      usrController.clear();
+                                      usernameHintText = 'Please get your location first!';
+                                    });
+                                  }
+                                }
+                                else{
                                   sentOnce = false;
                                   name = nameRaw.trim();
                                   if(name.isEmpty == true){name = "Anonymous";}
@@ -279,12 +309,6 @@ class _UserState extends State<User> {
                                     context,
                                     MaterialPageRoute(builder: (context) => const ChatScreen()),
                                   );
-                                }
-                                else{
-                                  setState(() {
-                                    usrController.clear();
-                                    usernameHintText = 'Please get your location first!';
-                                  });
                                 }
                               },
                             ),
